@@ -18,7 +18,15 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
+    protected static bool $shouldSkipAuthorization = true;
+
     protected static ?string $modelLabel = 'cliente';
+
+    protected static ?string $pluralModelLabel = 'clientes';
+
+    protected static bool $hasTitleCaseModelLabel = false;
+
+    protected static ?string $navigationLabel = 'Mis Clientes';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
