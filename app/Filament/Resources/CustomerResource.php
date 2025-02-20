@@ -13,6 +13,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Component;
+use Filament\Resources\Components\Tab;
 
 class CustomerResource extends Resource
 {
@@ -28,7 +29,11 @@ class CustomerResource extends Resource
 
     protected static ?string $navigationLabel = 'Mis Clientes';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationGroup = 'Shop';
 
     public static function form(Form $form): Form
     {
@@ -79,6 +84,25 @@ class CustomerResource extends Resource
             'create' => Pages\CreateCustomer::route('/create'),
             'view' => Pages\ViewCustomer::route('/{record}'),
             'edit' => Pages\EditCustomer::route('/{record}/edit'),
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('All customers'),
+            'active' => Tab::make('Active customers')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', true)),
+            'inactive' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('active', false)),
+            Tab::make()
+                ->icon('heroicon-m-users-group')
+                ->iconPosition(IconPosition::After),
+            Tab::make()
+                ->badge(Customer::query()->where('active', true)->count())
+                ->badgeColror('success'),
+            Tab::make()
+                ->extraAttributes(['data-cy' => 'statement-confirmed-tab']),
         ];
     }
 }

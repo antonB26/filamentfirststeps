@@ -8,6 +8,12 @@ use Filament\Resources\Pages\ListRecords;
 
 class ListCustomers extends ListRecords
 {
+
+        public function redirectToCustomers()
+    {
+        return redirect(CustomerResource::getUrl('edit', ['record' => $customer]));
+    }
+
     protected static string $resource = CustomerResource::class;
 
     protected function getHeaderActions(): array
